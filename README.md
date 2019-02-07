@@ -22,5 +22,8 @@ pip install -U -r requirements.txt
 ```bash
 npm install serverless -g
 
+# It needs to be Installed local
+npm install serverless-python-requirements
+
 sls deploy <--aws-profile my-rt-profile>  --stage prod
 ```
