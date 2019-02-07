@@ -1,0 +1,29 @@
+service:
+  name: cloudwatch-slack-notifications
+
+provider:
+  name: aws
+  runtime: python3.6
+
+functions:
+  codepipeline:
+    name: ${self:service}-codepipeline
+    handler: main.lambda_handler
+    description: Handle CloudWatch Events for Code Pipeline
+    memorySize: 128
+    timeout: 120
+    environment: ${file(.env.yml):lambda.environment}
+    events:
+      - cloudwatchEvent:
+          event:
+            source:
+              - "aws.codepipeline"
+            detail-type:
+              - "CodePipeline Stage Execution State Change"
+            detail:
+              state:
+                - FAILED
+                - CANCELED
+                - SUCCEEDED
+                - RESUMED
+ 
