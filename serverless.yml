@@ -8,7 +8,7 @@ provider:
 functions:
   codepipeline:
     name: ${self:service}-codepipeline
-    handler: main.lambda_handler
+    handler: codepipeline.lambda_handler
     description: Handle CloudWatch Events for Code Pipeline
     memorySize: 128
     timeout: 120
