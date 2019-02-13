@@ -6,6 +6,8 @@ from slackclient import SlackClient
 
 slack_token = os.environ["SLACK_API_TOKEN"]
 channel = os.environ['SLACK_CHANNEL']
+excluded_stages = os.environ.get('EXCLUDED_STAGES', '').split(',')
+excluded_successes = os.environ.get('EXCLUDED_SUCCESSES', '').split(',')
 
 
 def lambda_handler(event, context):
@@ -22,10 +24,11 @@ def lambda_handler(event, context):
     details = event['detail']
 
     # Don't notify on the following
-    if details['stage'] == 'Source':
+    if details['stage'] in excluded_stages:
         print('Skipping Slack notification for {}'.format(details['stage']))
         return
-    if details['stage'] == 'Build' and details['state'] == 'SUCCEEDED':
+    if details['stage'] in excluded_successes \
+            and details['state'] == 'SUCCEEDED':
         print('Skipping Slack notification for {} {}'.format(
             details['stage'], details['state']))
         return
